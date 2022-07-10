@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { resolve } from 'mlly'
-import { getExports } from '../dist'
+import { getExportsRuntime } from '../dist'
 
 describe('should', () => {
   it('ESM', async () => {
-    expect((await getExports('@antfu/utils')).slice(0, 10))
+    expect((await getExportsRuntime('@antfu/utils')).slice(0, 10))
       .toMatchInlineSnapshot(`
         [
           "assert",
@@ -21,7 +21,7 @@ describe('should', () => {
       `)
   })
   it('CJS', async () => {
-    expect((await getExports('react')).slice(0, 10))
+    expect((await getExportsRuntime('react')).slice(0, 10))
       .toMatchInlineSnapshot(`
         [
           "Children",
@@ -38,7 +38,7 @@ describe('should', () => {
       `)
   })
   it('vue/reactivity', async () => {
-    expect((await getExports('@vue/reactivity', { url: await resolve('vue') })).slice(0, 8))
+    expect((await getExportsRuntime('@vue/reactivity', { url: await resolve('vue') })).slice(0, 8))
       .toMatchInlineSnapshot(
       `
         [

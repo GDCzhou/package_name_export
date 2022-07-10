@@ -1,11 +1,12 @@
-import { resolve } from 'mlly'
+import Pool from 'tinypool'
 import type { GetExportsOptions } from './types'
 
-export async function getExports(name: string, options?: GetExportsOptions) {
-  const p = await resolve(name, { url: options?.url })
-  const pkg = await import(p)
-  const keys = Object.keys(pkg)
-  if (keys.length === 1 && keys[0] === 'default')
-    return Object.keys(pkg.default)
-  return keys
+let _worker: Pool
+export async function getExportsRuntime(name: string, options?: GetExportsOptions) {
+  if (!_worker) {
+    _worker = new Pool({
+      filename: new URL('./worker.js', import.meta.url).href,
+    })
+  }
+  return await _worker.run({ name, options })
 }
