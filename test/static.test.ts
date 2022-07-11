@@ -27,8 +27,13 @@ describe('static', () => {
 
   it('vue', async () => {
     const pkg = await getExportsStatic('vue')
-    expect(pkg.slice(5, 10)).toMatchInlineSnapshot(`
+    expect(pkg.slice(0, 10)).toMatchInlineSnapshot(`
       [
+        "compile",
+        "Transition",
+        "TransitionGroup",
+        "VueElement",
+        "createApp",
         "createSSRApp",
         "defineCustomElement",
         "defineSSRCustomElement",

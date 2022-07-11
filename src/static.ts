@@ -29,18 +29,18 @@ export async function getExportsStatic(
     relative: string,
     importer?: string,
   ): Promise<string[]> {
-    const isPkgRegx = /^[@a-zA-Z]/
+    const isPkgRegx = /^[@a-z0-9]/
     const url = relative.match(isPkgRegx)
       ? await resolvePackageEntry(relative, importer)
       : new URL(relative, importer).href
     return getExportsUrl(url)
   }
-  async function getExportsUrl(url: string) {
+  async function getExportsUrl(url: string): Promise<string[]> {
     if (!map.has(url))
       map.set(url, _getExportsUrl(url))
     return await map.get(url)!
   }
-  async function _getExportsUrl(url: string) {
+  async function _getExportsUrl(url: string): Promise<string[]> {
     const code = await fs.readFile(fileURLToPath(url), 'utf-8')
     // specifier: '@vue/runtime-dom',
     const exports = findExports(code)
