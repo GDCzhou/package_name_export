@@ -5,31 +5,38 @@ import { getExportsStatic } from '../src'
 
 describe('static', () => {
   it('ESM', async () => {
-    expect((await getExportsStatic('@antfu/utils')).slice(0, 10))
-      .toMatchInlineSnapshot(
-   `
-        [
-          "assert",
-          "at",
-          "batchInvoke",
-          "clamp",
-          "clampArrayRange",
-          "clearUndefined",
-          "createControlledPromise",
-          "createPromiseLock",
-          "createSingletonPromise",
-          "debounce",
-        ]
-      `)
+    expect(
+      (await getExportsStatic('@antfu/utils')).slice(0, 10),
+    ).toMatchInlineSnapshot(
+      `
+      [
+        "assert",
+        "at",
+        "batchInvoke",
+        "clamp",
+        "clampArrayRange",
+        "clearUndefined",
+        "createControlledPromise",
+        "createPromiseLock",
+        "createSingletonPromise",
+        "debounce",
+      ]
+    `,
+    )
   })
 
-  it.only('vue', async () => {
-    expect((await getExportsStatic('vue')))
-      .toMatchInlineSnapshot(`
-        [
-          "compile",
-        ]
-      `)
+  it('vue', async () => {
+    const pkg = await getExportsStatic('vue')
+    expect(pkg.slice(5, 10)).toMatchInlineSnapshot(`
+      [
+        "createSSRApp",
+        "defineCustomElement",
+        "defineSSRCustomElement",
+        "hydrate",
+        "initDirectivesForSSR",
+      ]
+    `)
+    expect(pkg).toContain('onMounted')
   })
 })
 
